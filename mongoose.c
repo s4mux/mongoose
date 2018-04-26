@@ -5374,7 +5374,7 @@ out:
 /* Amalgamated: #include "mongoose/src/mg_util.h" */
 
 //static const char *mg_version_header = "Mongoose/" MG_VERSION;
-static const char *mg_version_header = "HAENNI HNP Server 0.0.1";
+static const char *mg_version_header = "HAENNI WebServer 0.0.1";
 
 enum mg_http_proto_data_type { DATA_NONE, DATA_FILE, DATA_PUT };
 
