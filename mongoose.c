@@ -5374,7 +5374,8 @@ out:
 /* Amalgamated: #include "mongoose/src/mg_util.h" */
 
 //static const char *mg_version_header = "Mongoose/" MG_VERSION;
-static const char *mg_version_header = "HAENNI WebServer 0.0.1";
+static const char *mg_version_header_name = "HAENNI WebServer";
+static char mg_version_header_number[15] = {0};
 
 enum mg_http_proto_data_type { DATA_NONE, DATA_FILE, DATA_PUT };
 
@@ -6592,8 +6593,8 @@ const char *mg_status_message(int status_code) {
 
 void mg_send_response_line_s(struct mg_connection *nc, int status_code,
                              const struct mg_str extra_headers) {
-  mg_printf(nc, "HTTP/1.1 %d %s\r\nServer: %s\r\n", status_code,
-            mg_status_message(status_code), mg_version_header);
+  mg_printf(nc, "HTTP/1.1 %d %s\r\nServer: %s %s\r\n", status_code,
+            mg_status_message(status_code), mg_version_header_name, mg_version_header_number);
   if (extra_headers.len > 0) {
     mg_printf(nc, "%.*s\r\n", (int) extra_headers.len, extra_headers.p);
   }
@@ -7329,9 +7330,9 @@ static void mg_send_directory_listing(struct mg_connection *nc, const char *dir,
   mg_printf_http_chunk(nc,
                        "</tbody><tr><td colspan=3><hr></td></tr>\n"
                        "</table>\n"
-                       "<address>%s</address>\n"
+                       "<address>%s %s</address>\n"
                        "</body></html>",
-                       mg_version_header);
+                       mg_version_header_name, mg_version_header_number);
   mg_send_http_chunk(nc, "", 0);
   /* TODO(rojer): Remove when cesanta/dev/issues/197 is fixed. */
   nc->flags |= MG_F_SEND_AND_CLOSE;
@@ -15963,6 +15964,17 @@ int rmdir(const char *dirname) {
 unsigned int sleep(unsigned int seconds) {
   Sleep(seconds * 1000);
   return 0;
+}
+
+
+void mg_set_version_number(const char* str) {
+  int i=0;
+  while (str[i] && i < sizeof(mg_version_header_number)) {
+    mg_version_header_number[i] = str[i];
+    i++;
+  }
+  mg_version_header_number[i]=0;
+  
 }
 
 #endif /* _WIN32 */

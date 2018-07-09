@@ -3539,6 +3539,9 @@ struct mg_connection {
  */
 void mg_mgr_init(struct mg_mgr *mgr, void *user_data);
 
+
+
+void mg_set_version_number(const char* str);
 /*
  * Optional parameters to `mg_mgr_init_opt()`.
  *
